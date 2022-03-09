@@ -33,7 +33,7 @@ export class ScoreController {
 
     @Post()
     async create(@Body() createScoreDto: CreateScoreDto) {
-        const std_score = this.StudentsService.findOne(createScoreDto.student);
+        const std_score = this.StudentsService.findOne(createScoreDto.students);
         const subject = await this.subjectsService.findOneById(createScoreDto.subject);
         if (!std_score || !subject) {
             throw new HttpException({

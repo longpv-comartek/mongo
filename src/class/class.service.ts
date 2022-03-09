@@ -20,7 +20,7 @@ export class classService {
         }).save();
     }
 
-    async update(id, classProps) {
+    async update(id, classProps: UpdateClassDto) {
         return await this.model.findByIdAndUpdate(id, classProps).exec();
     }
 
