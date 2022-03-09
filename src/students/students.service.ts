@@ -32,7 +32,7 @@ export class StudentsService {
         if (update.class) {
             const oldStudent = await this.model.findById(id).populate('class').exec();
             const oldClass = oldStudent.class;
-             const newClass = await this.classService.findOne(update.class);
+            const newClass = await this.classService.findOne(update.class);
             const arrStudentInOldClass = oldClass.students as students[];
             const index = arrStudentInOldClass.indexOf(oldStudent);
 
@@ -52,6 +52,8 @@ export class StudentsService {
             });
             return newStudent;
         }
+        return await this.model.findByIdAndUpdate(id, update).exec()
+
     }
 
     async delete({ id }: DeleteStudentDto) {

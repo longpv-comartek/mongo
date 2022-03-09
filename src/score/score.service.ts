@@ -18,10 +18,10 @@ export class ScoreService {
 
     ) { }
 
-    async create(createTodoDto: CreateScoreDto) {
+    async create(createTodoDto) {
         const result = await new this.model(createTodoDto).save();
-        const student = await this.StudentsService.findOne(createTodoDto.student);
-        console.log(student, result);
+        const student = await this.StudentsService.findOne(createTodoDto.students);
+        console.log(result, createTodoDto,);
         const subject = await this.SubjectsService.findOneById(createTodoDto.subject);
         await this.StudentsService.update(createTodoDto.student, { score: [...student.score, result] });
         await this.SubjectsService.update(createTodoDto.subject, { scores: [...subject.scores, result] });
