@@ -1,0 +1,15 @@
+import { Type } from 'class-transformer';
+import { IsInt, IsOptional, IsPositive, Length } from 'class-validator';
+
+export class UpdateClassDto {
+  @IsPositive()
+  @IsInt()
+  @Type(() => Number)
+  readonly id: number;
+
+  @Length(3, 60)
+  readonly name: string;
+
+  @Length(3, 60)
+  readonly teacherName: string;
+}
