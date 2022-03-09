@@ -2,22 +2,23 @@ import {
     Body,
     Controller,
     Delete,
+    forwardRef,
     Get,
     HttpException,
     HttpStatus,
+    Inject,
     Patch,
     Post,
-    Query,
+    Param,
 } from '@nestjs/common';
 import {
     CreateScoreDto,
     DeleteScoreDto,
     UpdateScoreDto,
 } from './dto';
-
+import { SubjectsService } from '../subjects/subjects.service';
 import { ScoreService } from './score.service';
 import { StudentsService } from 'src/students/students.service';
-import { SubjectService } from 'src/subject/subject.service';
 
 @Controller('score')
 export class ScoreController {
@@ -25,38 +26,41 @@ export class ScoreController {
     constructor(
         private readonly ScoreService: ScoreService,
         private readonly StudentsService: StudentsService,
-        private readonly SubjectService: SubjectService
+        @Inject(forwardRef(() => SubjectsService))
+        private readonly subjectsService: SubjectsService,
 
     ) { }
 
     @Post()
-    async create(@Body() id_std: string, id_sub: string, createClassDto: CreateScoreDto) {
-        const std_score = this.StudentsService.findOne(id_std)
-        const std_subject = this.SubjectService.findOne(id_sub)
-        if (!std_score || !std_subject) {
+    async create(@Body() createScoreDto: CreateScoreDto) {
+        const std_score = this.StudentsService.findOne(createScoreDto.student);
+        const subject = await this.subjectsService.findOneById(createScoreDto.subject);
+        if (!std_score || !subject) {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
                 error: `Bad Request: Score cannot found!`,
             }, HttpStatus.BAD_REQUEST);
         }
-        return this.ScoreService.create(createClassDto);
+        return this.ScoreService.create(createScoreDto);
     }
 
-    @Patch()
-    async update(@Body() id: string, updateClassDto: UpdateScoreDto) {
-        const find_score = this.ScoreService.findOne(id)
-        if (!find_score) {
+    @Patch('/:id')
+    async update(@Param('id') id: string, @Body() updateScoreDto: UpdateScoreDto) {
+        const std_score = this.StudentsService.findOne(updateScoreDto.student)
+        const subject = await this.subjectsService.findOneById(updateScoreDto.subject);
+
+        if (!std_score || !subject) {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
                 error: `Bad Request: Score cannot found!`,
             }, HttpStatus.BAD_REQUEST);
         }
-        return this.ScoreService.update(updateClassDto);
+        return this.ScoreService.update(id, updateScoreDto);
     }
 
     @Delete()
-    async delete(@Body() id: string, deleteClassDto: DeleteScoreDto) {
-        const find_score = this.ScoreService.findOne(id)
+    async delete(@Body() deleteClassDto: DeleteScoreDto) {
+        const find_score = this.ScoreService.findOne(deleteClassDto.id)
         if (!find_score) {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
@@ -71,8 +75,8 @@ export class ScoreController {
         return this.ScoreService.findAll();
     }
 
-    @Get()
-    async all(@Query() id: string) {
+    @Get('/:id')
+    async all(@Param() id: string) {
         return this.ScoreService.findOne(id);
     }
 }

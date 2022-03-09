@@ -3,10 +3,10 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { students } from '../../students/schema/student.schema';
 import { Class } from 'src/class/schema/class.schema';
-export type scoreDocument = Score & Document;
+export type scoreDocument = score & Document;
 
 @Schema()
-export class Score {
+export class score {
     @Prop()
     id: string;
 
@@ -20,4 +20,4 @@ export class Score {
     students: students;
 }
 
-export const ScoreSchema = SchemaFactory.createForClass(Score);
+export const scoreSchema = SchemaFactory.createForClass(score);

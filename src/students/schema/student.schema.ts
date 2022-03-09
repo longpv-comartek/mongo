@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { Score } from '../../score/schema/score.schema';
+import { score } from '../../score/schema/score.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
@@ -30,7 +30,6 @@ export class students {
     @Prop(
         {
             type: mongoose.Schema.Types.ObjectId, ref: 'Class',
-            required: true
         }
     )
     @Type(() => Class)
@@ -38,7 +37,7 @@ export class students {
 
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'score' }] })
-    Score: Score[];
+    score: score[];
 }
 
 export const studentsSchema = SchemaFactory.createForClass(students);

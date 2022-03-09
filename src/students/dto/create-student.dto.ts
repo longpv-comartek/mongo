@@ -31,5 +31,5 @@ export class CreateStudentDto {
   @IsPositive()
   @IsInt()
   @Type(() => String)
-  readonly class: number;
+  readonly class: string;
 }
