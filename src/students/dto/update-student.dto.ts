@@ -8,11 +8,8 @@ import {
   IsPositive,
   Length,
 } from 'class-validator';
+import { score } from 'src/score/schema/score.schema';
 export class UpdateStudentDto {
-  @IsPositive()
-  @IsInt()
-  @Type(() => Number)
-  readonly id: number;
 
   @Length(3, 60)
   @IsOptional()
@@ -35,10 +32,14 @@ export class UpdateStudentDto {
   @IsOptional()
   readonly email?: string;
 
-  @Expose({ name: 'classId' })
+  @Expose({ name: 'class' })
   @IsPositive()
   @IsInt()
   @IsOptional()
   @Type(() => Number)
-  readonly class?: number;
+  readonly class?: string;
+
+
+  @IsOptional()
+  readonly score?: score[]
 }

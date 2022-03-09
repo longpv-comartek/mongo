@@ -9,7 +9,7 @@ import {
 import { Model } from 'mongoose';
 
 @Injectable()
-export class ClassService {
+export class classService {
     constructor(
         @InjectModel(Class.name) private readonly model: Model<classtDocument>,
     ) { }
@@ -20,19 +20,19 @@ export class ClassService {
         }).save();
     }
 
-    async update({ id, ...classProps }: UpdateClassDto) {
-        return this.model.findByIdAndUpdate(id, classProps).exec();
+    async update(id, classProps) {
+        return await this.model.findByIdAndUpdate(id, classProps).exec();
     }
 
     async delete({ id }: DeleteClassDto) {
         return this.model.findByIdAndDelete(id).exec();
     }
 
-    async findOne(id: string) {        
-        return await this.model.findById(id).exec();
+    async findOne(_id: string) {
+        return await this.model.findById(_id).populate('students').exec();
     }
 
     async findAll() {
-        return await this.model.find();
+        return await this.model.find().populate('students').exec();
     }
 }

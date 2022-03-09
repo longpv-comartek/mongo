@@ -13,14 +13,14 @@ export class UpdateScoreDto {
   @IsPositive()
   @IsInt()
   @Type(() => Number)
-  readonly student?: number;
+  readonly student?: string;
 
   @Expose({ name: 'subjectId' })
   @ValidateIf((o) => !o.id || (o.subject && o.student))
   @IsPositive()
   @IsInt()
   @Type(() => Number)
-  readonly subject?: number;
+  readonly subject?: string;
 
   @Min(1)
   @Max(10)

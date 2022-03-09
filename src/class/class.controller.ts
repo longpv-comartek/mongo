@@ -8,7 +8,7 @@ import {
     Post,
     Query,
 } from '@nestjs/common';
-import { ClassService } from './class.service';
+import { classService } from './class.service';
 import {
     CreateClassDto,
     DeleteClassDto,
@@ -17,31 +17,31 @@ import {
 
 @Controller('class')
 export class ClassController {
-    constructor(private readonly ClassService: ClassService) { }
+    constructor(private readonly classService: classService) { }
 
     @Post()
     async create(@Body() createClassDto: CreateClassDto) {
-        return this.ClassService.create(createClassDto);
+        return this.classService.create(createClassDto);
     }
 
     @Patch()
-    async update(@Body() updateClassDto: UpdateClassDto) {
-        return this.ClassService.update(updateClassDto);
+    async update(@Body() { id, updateClassDto }) {
+        return this.classService.update(id, updateClassDto);
     }
 
     @Delete()
     async delete(@Body() deleteClassDto: DeleteClassDto) {
-        return this.ClassService.delete(deleteClassDto);
+        return this.classService.delete(deleteClassDto);
     }
 
     @Get('/:id')
     async all(@Param() id: string) {
-        return this.ClassService.findOne(id);
+        return this.classService.findOne(id);
     }
 
     @Get()
     async search() {
-        return this.ClassService.findAll();
+        return this.classService.findAll();
     }
 
 
